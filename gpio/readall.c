@@ -485,19 +485,19 @@ void doReadall(void)
 
 	switch(model){
 		case MODEL_KHADAS_VIM1:
-			printf (" +------+-----+----------+------+---+----+---- Model  KDADAS-VIM1---+----+---+------+----------+-----+------+\n") ;
+			printf (" +------+-----+----------+------+---+----+---- Model  Khadas VIM1 --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim1;
 			break;
 		case MODEL_KHADAS_VIM2:
-			printf (" +------+-----+----------+------+---+----+---- Model  KDADAS-VIM2---+----+---+------+----------+-----+------+\n") ;
+			printf (" +------+-----+----------+------+---+----+---- Model  Khadas VIM2 --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim2;
 			break;
 		case MODEL_KHADAS_VIM3:
-			printf (" +------+-----+----------+------+---+----+---- Model  KDADAS-VIM3---+----+---+------+----------+-----+------+\n") ;
+			printf (" +------+-----+----------+------+---+----+---- Model  Khadas VIM3 --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim3;
 			break;
 		case MODEL_KHADAS_EDGE:
-			printf (" +------+-----+-------------------+------+---+----+--- Model  KHADAS-EDGE ---+----+---+------+----------------------------+-----+------+\n");
+			printf (" +------+-----+-------------------+------+---+----+--- Model  Khadas-Edge ---+----+---+------+----------------------------+-----+------+\n");
 			physNames = physNamesKhadasEdge;
 			break;
 		default:
