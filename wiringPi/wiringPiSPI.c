@@ -42,6 +42,7 @@
 static const char       *spiDev0  = "/dev/spidev0.0" ;
 static const char       *spiDev1  = "/dev/spidev0.1" ;
 static const char       *spiDevType3    = "/dev/spidev3.0";
+static const char       *spiDevVIM3 = "/dev/spidev1.0";
 static const uint8_t     spiBPW   = 8 ;
 static const uint16_t    spiDelay = 0 ;
 
@@ -73,7 +74,6 @@ int wiringPiSPIGetFd (int channel)
 int wiringPiSPIDataRW (int channel, unsigned char *data, int len)
 {
   struct spi_ioc_transfer spi ;
-
   channel &= 1 ;
 
 // Mentioned in spidev.h but not used in the original kernel documentation
@@ -88,8 +88,28 @@ int wiringPiSPIDataRW (int channel, unsigned char *data, int len)
   spi.speed_hz      = spiSpeeds [channel] ;
   spi.bits_per_word = spiBPW ;
 
-  return ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
+  ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
 }
+
+int wiringPiSPIDataRW_khadas (int channel, unsigned char *data1, unsigned char *data2, int len)
+{
+  struct spi_ioc_transfer spi ;
+  channel &= 1 ;
+
+// Mentioned in spidev.h but not used in the original kernel documentation
+//  test program )-:
+
+  memset (&spi, 0, sizeof (spi)) ;
+
+  spi.tx_buf        = (unsigned long)data1 ;
+  spi.rx_buf        = (unsigned long)data2 ;
+  spi.len           = len ;
+  spi.delay_usecs   = spiDelay ;
+  spi.speed_hz      = spiSpeeds [channel] ;
+  spi.bits_per_word = spiBPW ;
+
+  ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
+ }
 
 
 /*
@@ -113,10 +133,15 @@ int wiringPiSPISetupMode (int channel, int speed, int mode)
 		if ((fd = open (device, O_RDWR)) < 0)
 			return wiringPiFailure (WPI_ALMOST, "Unable to open SPI device: %s\n", strerror (errno)) ;
 	}
+	else if (model == MODEL_KHADAS_VIM3) {
+		device = spiDevVIM3;
+		if ((fd = open (device, O_RDWR)) < 0)
+			return wiringPiFailure (WPI_ALMOST, "Unable to open SPI device: %s\n", strerror (errno)) ;
+	}
 	else{
 	  if ((fd = open (channel == 0 ? spiDev0 : spiDev1, O_RDWR)) < 0)
 	    return wiringPiFailure (WPI_ALMOST, "Unable to open SPI device: %s\n", strerror (errno)) ;
-}
+	}
   spiSpeeds [channel] = speed ;
   spiFds    [channel] = fd ;
 

@@ -28,6 +28,7 @@ extern "C" {
 
 int wiringPiSPIGetFd     (int channel) ;
 int wiringPiSPIDataRW    (int channel, unsigned char *data, int len) ;
+int wiringPiSPIDataRW_khadas    (int channel, unsigned char *data1, unsigned char *data2, int len) ;
 int wiringPiSPISetupMode (int channel, int speed, int mode) ;
 int wiringPiSPISetup     (int channel, int speed) ;
 
