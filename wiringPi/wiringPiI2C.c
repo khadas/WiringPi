@@ -225,15 +225,14 @@ int wiringPiI2CSetup (const int devId)
 
   rev = piGpioLayout () ;
 
-  if (rev == 1)
-    device = "/dev/i2c-0" ;
-  else
-    device = "/dev/i2c-1" ;
-	piBoardId (&model, &rev, &mem, &maker, &overVolted) ;
-	switch(model)	{
-	case MODEL_KHADAS_EDGE:
-		device = "/dev/i2c-2";
+  piBoardId (&model, &rev, &mem, &maker, &overVolted) ;
+  switch(model)	{
+  	case MODEL_KHADAS_EDGE:
+  	device = "/dev/i2c-2";
 	    break;
+	case MODEL_KHADAS_VIM3:
+		device = "/dev/i2c-3";  /*default is i2c-3 , if you want to use i2c-4, you just need edit it */
+		break;
 	default:
 		break;
 	}
