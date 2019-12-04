@@ -606,8 +606,6 @@ static int init_gpio_mmap(void)
 	gpio  = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE,
 						MAP_SHARED, fd, VIM3_GPIO_BASE);
 
-	printf("This is a tst line :%d\n\n\n",__LINE__);
-
 	if (((int32_t)gpio == -1) || ((int32_t)gpio1 == -1))
 		return msg (MSG_ERR,
 				"wiringPiSetup: mmap (GPIO) failed: %s\n",
