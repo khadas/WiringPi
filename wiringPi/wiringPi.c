@@ -3,7 +3,6 @@
 /*							WiringPi Library for KHADAS									*/
 /*																						*/
 /*--------------------------------------------------------------------------------------*/
-#define _XOPEN_SOURCE
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
