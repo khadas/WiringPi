@@ -88,7 +88,7 @@ int wiringPiSPIDataRW (int channel, unsigned char *data, int len)
   spi.speed_hz      = spiSpeeds [channel] ;
   spi.bits_per_word = spiBPW ;
 
-  ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
+  return ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
 }
 
 int wiringPiSPIDataRW_khadas (int channel, unsigned char *data1, unsigned char *data2, int len)
@@ -108,7 +108,7 @@ int wiringPiSPIDataRW_khadas (int channel, unsigned char *data1, unsigned char *
   spi.speed_hz      = spiSpeeds [channel] ;
   spi.bits_per_word = spiBPW ;
 
-  ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
+  return ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
  }
 
 
