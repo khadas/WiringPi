@@ -59,6 +59,7 @@
 #define VIM3_GPIOZ_PUEN_REG_OFFSET      0x13E
 #define VIM3_GPIOZ_DS_REG_4_OFFSET   	0x1D5
 #define VIM3_GPIOZ_MUX_B_REG_OFFSET		0x1B6
+#define VIM3_GPIOZ_MUX_C_REG_OFFSET		0x1B7
 
 #ifdef __cplusplus
 extern "C"{
