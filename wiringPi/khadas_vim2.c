@@ -33,7 +33,7 @@ static const int pinToGpio_rev[64] = {
 	270,275,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
 	271,272,		//   2 | 3  :					  GPIODV_22 | GPIODV_22
 	222,223,		//	 4 | 5  :					  			| GPIOH_7
-	225, -1,		//	 6 | 7  :						GPIOH_9 |
+	225,220,		//	 6 | 7  :						GPIOH_9 |
 	 -1, -1,		// 	 8 | 9  :								|
 	224,236,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
 	 -1, -1,		//	12 | 13 :								|
@@ -67,7 +67,7 @@ static const int phyToGpio_rev[64] = {
 	 -1,222,			//	10 | 30 :					   ADC0	| GPIOH6
 	 -1,225,			//	11 | 31 :					   1.8V	| GPIOH9
 	 -1,224,			//	12 | 32 :					   ADC1	| GPIOH8
-	 -1,236,			//	13 | 33 :					  SPDIF	| GPIOAO_6
+	220,236,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
 	 -1, -1,			//	14 | 34 :						GND	| GND
 	235,278,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
 	234, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
