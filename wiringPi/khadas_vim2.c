@@ -30,22 +30,22 @@
 
 static const int pinToGpio_rev[64] = {
 	//wiringPi number to native gpio number
-	270,275,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
+	 -1,270,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
 	271,272,		//   2 | 3  :					  GPIODV_22 | GPIODV_22
-	222,223,		//	 4 | 5  :					  			| GPIOH_7
-	225, -1,		//	 6 | 7  :						GPIOH_9 |
-	 -1, -1,		// 	 8 | 9  :								|
-	224,236,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
-	 -1, -1,		//	12 | 13 :								|
-	 -1,274,		// 	14 | 15 :								|
-	276, -1,		// 	16 | 17 :					  GPIODV_27 |
-	 -1, -1,		//	18 | 19 :								|
-	 -1,235,		//	20 | 21 :								| GPIOAO_5
-	234, -1,		// 	22 | 23 :					   GPIOAO_4 |
-	231,230, 		//	24 | 25 :					   GPIOAO_1 | GPIOAO_0
+	220,235,		//	 4 | 5  :					  			| GPIOH_7
+	234,231,		//	 6 | 7  :						GPIOH_9 |
+	230,274,		// 	 8 | 9  :								|
+	273,276,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
+	275,223,		//	12 | 13 :								|
+	222,225,		// 	14 | 15 :								|
+	224,236,		// 	16 | 17 :					  GPIODV_27 |
+	278,221,		//	18 | 19 :								|
+	262, -1,		//	20 | 21 :								| GPIOAO_5
+	 -1, -1,		// 	22 | 23 :					   GPIOAO_4 |
+	 -1, -1, 		//	24 | 25 :					   GPIOAO_1 | GPIOAO_0
 	 -1, -1,		//	26 | 27 :								|
-	262,273,		//	28 | 29 :					  GPIODV_13 |
-	278,221,		//	30 | 31 : 								|
+	 -1, -1,		//	28 | 29 :					  GPIODV_13 |
+	 -1, -1,		//	30 | 31 : 								|
 	// Padding:
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //32to47
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //48to63
@@ -67,7 +67,7 @@ static const int phyToGpio_rev[64] = {
 	 -1,222,			//	10 | 30 :					   ADC0	| GPIOH6
 	 -1,225,			//	11 | 31 :					   1.8V	| GPIOH9
 	 -1,224,			//	12 | 32 :					   ADC1	| GPIOH8
-	 -1,236,			//	13 | 33 :					  SPDIF	| GPIOAO_6
+	220,236,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
 	 -1, -1,			//	14 | 34 :						GND	| GND
 	235,278,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
 	234, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
@@ -546,28 +546,27 @@ static unsigned int _digitalReadByte (void)
 /*------------------------------------------------------------------------------------------*/
 static int init_gpio_mmap(void)
 {
-	int fd;
+	int fd1,fd2;
 
 	/* GPIO mmap setup */
 	if(access("/dev/gpiomem",0) == 0){
-		if ((fd = open ("/dev/gpiomem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
+		if ((fd1 = open ("/dev/gpiomem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
 			return msg (MSG_ERR,
 					"wiringPiSetup: Unable to open /dev/gpiomem: %s\n",
 					strerror (errno));
-	}else{
-		if (geteuid () != 0)
+	}
+	if(access("/dev/gpiomem-ao",0) == 0){
+		if ((fd2 = open ("/dev/gpiomem-ao", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
 			return msg (MSG_ERR,
-					"wiringPiSetup: Must be root. (Did you forget sudo?)\n");
-
-		if ((fd = open ("/dev/mem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
-			return msg (MSG_ERR,
-					"wiringPiSetup: Unable to open /dev/mem: %s\n",
+					"wiringPiSetup: Unable to open /dev/gpiomem-ao: %s\n",
 					strerror (errno));
 	}
+
+
 	gpio1  = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE,
-						MAP_SHARED, fd, VIM2_GPIOAO_BASE);
+						MAP_SHARED, fd2, VIM2_GPIOAO_BASE);
 	gpio  = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE,
-						MAP_SHARED, fd, VIM2_GPIO_BASE);
+						MAP_SHARED, fd1, VIM2_GPIO_BASE);
 	if (((int32_t)gpio == -1) || ((int32_t)gpio1 == -1))
 		return msg (MSG_ERR,
 				"wiringPiSetup: mmap (GPIO) failed: %s\n",
