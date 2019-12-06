@@ -30,7 +30,7 @@
   static const int pinToGpio_rev[64] = {
   	//wiringPi number to native gpio number
 		-1,475,		//	0 |  1 :					 | GPIODV_26
-		-1,	-1,		//	2 |  3 :
+	   420,	-1,		//	2 |  3 :
 	   422,423,		//	4 |  5 : 					 | GPIOH_7 
 	   425,	-1,		//	6 |  7 :			 GPIOH_9 |
 		-1,	-1,		//	8 |  9 :
@@ -66,7 +66,7 @@
 	-1,422,		// 10 | 30 :   			    ADC_CH0 | GPIOH_6
 	-1,425,		// 11 | 31 :     			    GND | GPIOH_9
 	-1,424,		// 12 | 32 :  			    ADC_CH2 | GPIOH_8
-	-1,436,		// 13 | 33 :      			  SPDIF | GPIOAO_6
+   420,436,		// 13 | 33 :      			  SPDIF | GPIOAO_6
 	-1,	-1,		// 14 | 34 : 			        GND | GND
    435,	-1,		// 15 | 35 : (GPIOAO_5)UART_RX_AO_B | PWM_AO_A(GPIOAO_3)
    434,	-1,		// 16 | 36 : (GPIOAO_4)UART_TX_AO_B | RTC_CLK
