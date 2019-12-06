@@ -85,7 +85,7 @@ static const char *pupd [] =
 	"DSBLD", "P/U", "P/D"
 };
 
-static int physToWpi [64] = 
+static int physToWpi_vim1 [64] = 
 {
   -1,           // 0
   -1, -1,       // 1, 2
@@ -115,6 +115,72 @@ static int physToWpi [64] =
   -1, -1,
   17, 18,
   19, 20,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1
+} ;
+
+static int physToWpi_vim2 [64] = 
+{
+  -1,           // 0
+  -1, -1,       // 1, 2
+  -1, 15,
+   9, 29,
+  -1, -1,
+  -1, 16,
+   0,  1,
+  -1, -1,
+   3, -1,
+  -1,  5,
+  12,  4,
+  13,  6,
+  14, 10,
+   2, 11,       // 25, 26
+  -1, -1,	// Actually I2C, but not used
+  21, 30,
+  22, 26,
+  23, 31,
+  24, 27,
+  25,  7,
+  -1, -1,   //40
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  17, 18,
+  19, 20,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1
+} ;
+
+static int physToWpi_vim3 [64] = 
+{
+  -1,           // 0
+  -1, -1,       // 1, 2
+  -1,  6,
+  -1,  7,
+  -1, -1,
+  -1,  8,
+  -1,  9,
+  -1, -1,
+  -1, -1,
+  -1, 10,
+  -1, 11,
+  -1, 12,
+  -1, 13,
+   1, 14,       // 25, 26
+  -1, -1,	// Actually I2C, but not used
+   2, 15,
+   3, -1,
+  -1, 16,
+   4, -1,
+   5, 17,
+  -1, -1,   //40
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
   -1, -1, -1, -1, -1, -1, -1, -1, -1
 } ;
 
@@ -267,23 +333,23 @@ static const char *physNamesKhadasEdge [64] =
 	NULL,NULL,NULL,
 } ;
 
-static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *physNames[])
+static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *physNames[], int physToWpi_khadas[])
 {
 	int pin;
 
 	//GPIO, wPi pin number
-	if ((physPinToGpio (physPin) == -1) && (physToWpi [physPin] == -1))
+	if ((physPinToGpio (physPin) == -1) && (physToWpi_khadas [physPin] == -1))
 		printf (" |      |    ") ;
 	else if (physPinToGpio (physPin) != -1)
-		printf (" |  %3d | %3d", physPinToGpio (physPin), physToWpi [physPin]);
+		printf (" |  %3d | %3d", physPinToGpio (physPin), physToWpi_khadas [physPin]);
 	else
-		printf (" |      | %3d", physToWpi [physPin]);
+		printf (" |      | %3d", physToWpi_khadas [physPin]);
 
 	// GPIO pin name
 	printf (" | %s", physNames [physPin]);
 
 	// GPIO pin mode, value, drive strength, pupd
-	if ((physToWpi [physPin] == -1) || (physPinToGpio (physPin) == -1)){
+	if ((physToWpi_khadas [physPin] == -1) || (physPinToGpio (physPin) == -1)){
 		printf (" |      |   |    |      ") ;
 	}
 
@@ -293,7 +359,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 		else if(wpMode == MODE_PHYS)
 			pin = physPin;
 		else{
-			pin = physToWpi [physPin];
+			pin = physToWpi_khadas [physPin];
 		}
 		printf (" | %4s", alts [getAlt (pin)]);
 		printf (" | %d", digitalRead (pin));	
@@ -314,7 +380,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 	++physPin;
 
 	// GPIO pin mode, value, drive strength, pupd
-	if ((physToWpi [physPin] == -1) || (physPinToGpio (physPin) == -1))
+	if ((physToWpi_khadas [physPin] == -1) || (physPinToGpio (physPin) == -1))
 		printf (" |       |    |   |     ");
 	else {
 		if(wpMode == MODE_GPIO)
@@ -322,7 +388,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 		else if(wpMode == MODE_PHYS)
 			pin = physPin;
 		else
-			pin = physToWpi [physPin];
+			pin = physToWpi_khadas [physPin];
 
 		switch(model){
 			case MODEL_KHADAS_VIM1:
@@ -341,12 +407,12 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 	printf (" | %-6s", physNames [physPin]);
 
 	//GPIO, wPi pin number
-	if ((physPinToGpio (physPin) == -1) && (physToWpi [physPin] == -1))
+	if ((physPinToGpio (physPin) == -1) && (physToWpi_khadas [physPin] == -1))
 		printf (" |     |     ") ;
 	else if(physPinToGpio (physPin) != -1)
-		printf (" | %-3d |  %-3d", physToWpi [physPin], physPinToGpio (physPin));
+		printf (" | %-3d |  %-3d", physToWpi_khadas [physPin], physPinToGpio (physPin));
 	else
-		printf (" | %-3d |     ", physToWpi [physPin]);
+		printf (" | %-3d |     ", physToWpi_khadas [physPin]);
 	
 	printf (" |\n") ;
 }
@@ -455,8 +521,16 @@ void ReadallKhadas(int model, int rev, const char *physNames[])
 	else{
 		printf (" | GPIO | wPi |   Name   | Mode | V | DS | PU/PD | Physical | PU/PD | DS | V | Mode |   Name   | wPi | GPIO |\n");
 		printf (" +------+-----+----------+------+---+----+-------+----++----+-------+----+---+------+----------+-----+------+\n");
-		for (pin = 1 ; pin <= 40 ; pin += 2)
-			readallPhysKhadas (model, rev, pin, physNames);
+		if(MODEL_KHADAS_VIM3 == model){
+			for (pin = 1 ; pin <= 40 ; pin += 2)
+				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim3);
+		}else if (MODEL_KHADAS_VIM2 == model){
+			for (pin = 1 ; pin <= 40 ; pin += 2)
+				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim2);
+		}else {
+			for (pin = 1 ; pin <= 40 ; pin += 2)
+				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim1);
+		}
 		printf (" +------+-----+----------+------+---+----+-------+----++----+-------+----+---+------+----------+-----+------+\n");
 	}
 }
