@@ -546,28 +546,27 @@ static unsigned int _digitalReadByte (void)
 /*------------------------------------------------------------------------------------------*/
 static int init_gpio_mmap(void)
 {
-	int fd;
+	int fd1,fd2;
 
 	/* GPIO mmap setup */
 	if(access("/dev/gpiomem",0) == 0){
-		if ((fd = open ("/dev/gpiomem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
+		if ((fd1 = open ("/dev/gpiomem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
 			return msg (MSG_ERR,
 					"wiringPiSetup: Unable to open /dev/gpiomem: %s\n",
 					strerror (errno));
-	}else{
-		if (geteuid () != 0)
+	}
+	if(access("/dev/gpiomem-ao",0) == 0){
+		if ((fd2 = open ("/dev/gpiomem-ao", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
 			return msg (MSG_ERR,
-					"wiringPiSetup: Must be root. (Did you forget sudo?)\n");
-
-		if ((fd = open ("/dev/mem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
-			return msg (MSG_ERR,
-					"wiringPiSetup: Unable to open /dev/mem: %s\n",
+					"wiringPiSetup: Unable to open /dev/gpiomem-ao: %s\n",
 					strerror (errno));
 	}
+
+
 	gpio1  = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE,
-						MAP_SHARED, fd, VIM2_GPIOAO_BASE);
+						MAP_SHARED, fd2, VIM2_GPIOAO_BASE);
 	gpio  = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE,
-						MAP_SHARED, fd, VIM2_GPIO_BASE);
+						MAP_SHARED, fd1, VIM2_GPIO_BASE);
 	if (((int32_t)gpio == -1) || ((int32_t)gpio1 == -1))
 		return msg (MSG_ERR,
 				"wiringPiSetup: mmap (GPIO) failed: %s\n",
