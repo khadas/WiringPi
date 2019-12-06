@@ -33,7 +33,7 @@ static const int pinToGpio_rev[64] = {
 	 -1,499,		//   0 | 1  :					  			| GPIOAO_3
 	506, -1,		//   2 | 3  :					  GPIOAO_10 |
 	460,461,		//	 4 | 5  :					  	GPIOA_0	| GPIOA_1
-	463, -1,		//	 6 | 7  :						GPIOA_3 |
+	463,426,		//	 6 | 7  :						GPIOA_3 | GPIOZ_15
 	 -1, -1,		// 	 8 | 9  :								|
 	462,464,		//  10 | 11 :						GPIOA_2 | GPIOA_4
 	 -1, -1,		//	12 | 13 :								|
@@ -73,7 +73,7 @@ static const int phyToGpio_rev[64] = {
 	434, -1,			//	16 | 36 :	  (GPIOH_7)UART_TX_AO_B | RTC_CLK
 	 -1,431,			//	17 | 37 :						GND	| GPIOH_4
 	497, -1,			//	18 | 38 :		 (GPIOAO_1)Linux_RX	| MCUFA_1
-	496, -1,			//	19 | 39 :		 (GPIOAO_0)Linux_TX | GPIOZ_15
+	496,426,			//	19 | 39 :		 (GPIOAO_0)Linux_TX | GPIOZ_15
 	 -1, -1,			//	20 | 40 :					   3.3V	| GND
 	 //Not used
 	 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -261,6 +261,8 @@ static int gpioToMuxReg(int pin)
 			return  VIM3_GPIOZ_MUX_B_REG_OFFSET;
 		case VIM3_GPIOA_PIN_START + 8  ...VIM3_GPIOA_PIN_END:
 			return  VIM3_GPIOA_MUX_E_REG_OFFSET;
+		case VIM3_GPIOZ_PIN_START + 8  ...VIM3_GPIOZ_PIN_END:
+			return  VIM3_GPIOZ_MUX_C_REG_OFFSET;
 		case VIM3_GPIOH_PIN_START  ...VIM3_GPIOH_PIN_END:
 			return VIM3_GPIOH_MUX_B_REG_OFFSET;
 		case VIM3_GPIOAO_PIN_START ...VIM3_GPIOAO_PIN_START + 7:
