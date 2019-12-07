@@ -31,15 +31,15 @@
 // Revision 2:
 static const int pinToGpio[64] = {
 	// wiringPi number to native gpio number
-	120,  121,	//  0 |  1 :            GPIO3_D0 | GPIO3_D1
-	122,  123,	//  2 |  3 :            GPIO3_D2 | GPIO3_D3
-	124,  125,	//  4 |  5 :            GPIO3_D4 | GPIO3_D5
-	126,  127,	//  6 |  7 :            GPIO3_D6 | GPIO3_D7
-	64,  65,	//  8 |  9 : (GPIO2_A0) I2C2_SDA | I2C2_SCL (GPIO2_A1)
-	50, 128,	// 10 | 11 :  (GPIO1_C2) SPI3_CS | I2S_CLK (GPIO4_A0)
-	47,  48,	// 12 | 13 : (GPIO1_B7) SPI3_TXD | SPI3_RXD (GPIO1_C0)
-	49,  -1,	// 14 | 15 : (GPIO1_C1) SPI3_CLK | UART_TX
-	-1, 112,	// 16 | 17 :             UART_RX | SPDIF_TX (GPIO3_C0)
+	 -1,  112,	//  0 |  1 :            GPIO3_D0 | GPIO3_D1
+	 50,   49,	//  2 |  3 :            GPIO3_D2 | GPIO3_D3
+	 48,   47,	//  4 |  5 :            GPIO3_D4 | GPIO3_D5
+	 65,   64,	//  6 |  7 :            GPIO3_D6 | GPIO3_D7
+	120,128,	//  8 |  9 : (GPIO2_A0) I2C2_SDA | I2C2_SCL (GPIO2_A1)
+	127,122,	// 10 | 11 :  (GPIO1_C2) SPI3_CS | I2S_CLK (GPIO4_A0)
+	123,126,	// 12 | 13 : (GPIO1_B7) SPI3_TXD | SPI3_RXD (GPIO1_C0)
+	125,124,	// 14 | 15 : (GPIO1_C1) SPI3_CLK | UART_TX
+	121, -1,	// 16 | 17 :             UART_RX | SPDIF_TX (GPIO3_C0)
 	-1,  -1,	// 18 | 19 :
 	-1,  -1,	// 20 | 21 :  
 	-1,  -1,	// 22 | 23 : 

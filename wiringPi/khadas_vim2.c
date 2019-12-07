@@ -30,17 +30,17 @@
 
 static const int pinToGpio_rev[64] = {
 	//wiringPi number to native gpio number
-	 -1,270,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
-	271,272,		//   2 | 3  :					  GPIODV_22 | GPIODV_22
-	220,235,		//	 4 | 5  :					  			| GPIOH_7
-	234,231,		//	 6 | 7  :						GPIOH_9 |
-	230,274,		// 	 8 | 9  :								|
-	273,276,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
-	275,223,		//	12 | 13 :								|
-	222,225,		// 	14 | 15 :								|
-	224,236,		// 	16 | 17 :					  GPIODV_27 |
-	278,221,		//	18 | 19 :								|
-	262, -1,		//	20 | 21 :								| GPIOAO_5
+	 -1,470,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
+	471,472,		//   2 | 3  :					  GPIODV_22 | GPIODV_22
+	420,506,		//	 4 | 5  :					  			| GPIOH_7
+	505,502,		//	 6 | 7  :						GPIOH_9 |
+	501,474,		// 	 8 | 9  :								|
+	473,476,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
+	475,423,		//	12 | 13 :								|
+	422,425,		// 	14 | 15 :								|
+	424,507,		// 	16 | 17 :					  GPIODV_27 |
+	478,421,		//	18 | 19 :								|
+	462, -1,		//	20 | 21 :								| GPIOAO_5
 	 -1, -1,		// 	22 | 23 :					   GPIOAO_4 |
 	 -1, -1, 		//	24 | 25 :					   GPIOAO_1 | GPIOAO_0
 	 -1, -1,		//	26 | 27 :								|
@@ -56,24 +56,24 @@ static const int phyToGpio_rev[64] = {
 	//physical header pin number to native gpio number
 	 -1,				//	0
 	 -1, -1,			//	 1 | 21 :						 5V | GND
-	 -1,274,			//	 2 | 22 :						 5V	| GPIODV_25
-	 -1,273,			//	 3 | 23 :					 USB_DM | GPIODV_24
+	 -1,474,			//	 2 | 22 :						 5V	| GPIODV_25
+	 -1,473,			//	 3 | 23 :					 USB_DM | GPIODV_24
 	 -1, -1,			//	 4 | 24 :					 USB_DP | GND
-	 -1,276,			//	 5 | 25 :						GND	| GPIODV_27
-	270,275,			//	 6 | 26 :				  GPIODV_21	| GPIODV_26
-	271, -1,			//	 7 | 27 :				  GPIODV_22 | 3.3V
-	272, -1,			//	 8 | 28 :				  GPIODV_23	| GND
-	 -1,223,			//	 9 | 29 :						GND	| GPIOH7
-	 -1,222,			//	10 | 30 :					   ADC0	| GPIOH6
-	 -1,225,			//	11 | 31 :					   1.8V	| GPIOH9
-	 -1,224,			//	12 | 32 :					   ADC1	| GPIOH8
-	220,236,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
+	 -1,476,			//	 5 | 25 :						GND	| GPIODV_27
+	470,475,			//	 6 | 26 :				  GPIODV_21	| GPIODV_26
+	471, -1,			//	 7 | 27 :				  GPIODV_22 | 3.3V
+	472, -1,			//	 8 | 28 :				  GPIODV_23	| GND
+	 -1,423,			//	 9 | 29 :						GND	| GPIOH7
+	 -1,422,			//	10 | 30 :					   ADC0	| GPIOH6
+	 -1,425,			//	11 | 31 :					   1.8V	| GPIOH9
+	 -1,424,			//	12 | 32 :					   ADC1	| GPIOH8
+	420,507,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
 	 -1, -1,			//	14 | 34 :						GND	| GND
-	235,278,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
-	234, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
-	 -1,221,			//	17 | 37 :						GND	| GPIOH5
-	231, -1,			//	18 | 38 :		 (GPIOAO_1)Linux_RX	| EXP_INT
-	230,262,			//	19 | 39 :		 (GPIOAO_0)Linux_TX | GPIODV_13
+	506,478,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
+	505, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
+	 -1,421,			//	17 | 37 :						GND	| GPIOH5
+	502, -1,			//	18 | 38 :		 (GPIOAO_1)Linux_RX	| EXP_INT
+	501,462,			//	19 | 39 :		 (GPIOAO_0)Linux_TX | GPIODV_13
 	 -1, -1,			//	20 | 40 :					   3.3V	| GND
 	 //Not used
 	 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
