@@ -30,13 +30,13 @@
   static const int pinToGpio_rev[64] = {
   	//wiringPi number to native gpio number
 		-1,420,		//	0 |  1 :					 | GPIODV_26
-	   435,434,		//	2 |  3 :
-	   431,432,		//	4 |  5 : 					 | GPIOH_7 
+	   506,505,		//	2 |  3 :
+	   502,503,		//	4 |  5 : 					 | GPIOH_7 
 	   474,473,		//	6 |  7 :			 GPIOH_9 |
 	   476,475,		//	8 |  9 :
 	   423,422,		// 10 | 11 :			 GPIOH_8 | GPIOAO_6
 	   425,424,		// 12 | 13 :
- 	   436,433,		// 14 | 15 :
+ 	   507,504,		// 14 | 15 :
 	   421,	-1,		// 16 | 17 :      	   GPIODV_27 |
 		-1,	-1,		// 18 | 19 :
 		-1, -1,		// 20 | 21 :					 | GPIOAO_5
@@ -66,13 +66,13 @@
 	-1,422,		// 10 | 30 :   			    ADC_CH0 | GPIOH_6
 	-1,425,		// 11 | 31 :     			    GND | GPIOH_9
 	-1,424,		// 12 | 32 :  			    ADC_CH2 | GPIOH_8
-   420,436,		// 13 | 33 :      			  SPDIF | GPIOAO_6
+   420,507,		// 13 | 33 :      	 (GPIOH_4)SPDIF | GPIOAO_6
 	-1,	-1,		// 14 | 34 : 			        GND | GND
-   435,433,		// 15 | 35 : (GPIOAO_5)UART_RX_AO_B | PWM_AO_A(GPIOAO_3)
-   434,	-1,		// 16 | 36 : (GPIOAO_4)UART_TX_AO_B | RTC_CLK
+   506,504,		// 15 | 35 : (GPIOAO_5)UART_RX_AO_B | PWM_AO_A(GPIOAO_3)
+   505,	-1,		// 16 | 36 : (GPIOAO_4)UART_TX_AO_B | RTC_CLK
 	-1,421,		// 17 | 37 :  		  			GND | GPIOH_5
-   431,	-1,		// 18 | 38 :	 (GPIOAO_1)Linux_RX | PWR_EN
-   432,	-1,		// 19 | 39 :     (GPIOAO_2)Linux_Tx | PWM_F
+   502,	-1,		// 18 | 38 :	 (GPIOAO_1)Linux_RX | PWR_EN
+   503,	-1,		// 19 | 39 :     (GPIOAO_2)Linux_Tx | PWM_F
 	-1,	-1,		// 20 | 40 : 				   3.3V | GND
 	//  Not used
 	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,
