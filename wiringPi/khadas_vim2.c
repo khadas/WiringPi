@@ -32,13 +32,13 @@ static const int pinToGpio_rev[64] = {
 	//wiringPi number to native gpio number
 	 -1,470,		//   0 | 1  :					  GPIODV_21 | GPIODV_26
 	471,472,		//   2 | 3  :					  GPIODV_22 | GPIODV_22
-	420,505,		//	 4 | 5  :					  			| GPIOH_7
-	504,502,		//	 6 | 7  :						GPIOH_9 |
+	420,506,		//	 4 | 5  :					  			| GPIOH_7
+	505,502,		//	 6 | 7  :						GPIOH_9 |
 	501,474,		// 	 8 | 9  :								|
 	473,476,		//  10 | 11 :						GPIOH_8 | GPIOAO_6
 	475,423,		//	12 | 13 :								|
 	422,425,		// 	14 | 15 :								|
-	424,506,		// 	16 | 17 :					  GPIODV_27 |
+	424,507,		// 	16 | 17 :					  GPIODV_27 |
 	478,421,		//	18 | 19 :								|
 	462, -1,		//	20 | 21 :								| GPIOAO_5
 	 -1, -1,		// 	22 | 23 :					   GPIOAO_4 |
@@ -67,10 +67,10 @@ static const int phyToGpio_rev[64] = {
 	 -1,422,			//	10 | 30 :					   ADC0	| GPIOH6
 	 -1,425,			//	11 | 31 :					   1.8V	| GPIOH9
 	 -1,424,			//	12 | 32 :					   ADC1	| GPIOH8
-	420,506,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
+	420,507,			//	13 | 33 :			(GPIOH_4)SPDIF	| GPIOAO_6
 	 -1, -1,			//	14 | 34 :						GND	| GND
-	505,478,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
-	504, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
+	506,478,			//	15 | 35 :	 (GPIOAO_5)UART_RX_AO_B | GPIODV_29
+	505, -1,			//	16 | 36 :	 (GPIOAO_4)UART_TX_AO_B | RTC_CLK
 	 -1,421,			//	17 | 37 :						GND	| GPIOH5
 	502, -1,			//	18 | 38 :		 (GPIOAO_1)Linux_RX	| EXP_INT
 	501,462,			//	19 | 39 :		 (GPIOAO_0)Linux_TX | GPIODV_13
