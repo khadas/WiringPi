@@ -93,7 +93,7 @@ static const int phyToGpio_rev[64] = {
 const int *pinToGpio, *phyToGpio;
 
 /*	ADC file descriptor	*/
-//static char *adcFds[2];
+static char *adcFds[2];
 
 /*	GPIO mmap control	*/
 static volatile uint32_t *gpio,*gpio1;
@@ -134,7 +134,7 @@ static unsigned int _digitalReadByte    (void);
 /*								board init function										*/
 /*--------------------------------------------------------------------------------------*/
 static  int init_gpio_mmap (void);
-//static  void init_adc_fds   (void);
+static  void init_adc_fds   (void);
 void init_khadas_vim3(struct libkhadas *libwiring);
 
 /*--------------------------------------------------------------------------------------*/
@@ -571,7 +571,22 @@ static void _digitalWrite(int pin, int value)
 /*------------------------------------------------------------------------------------------*/
 static int _analogRead (int UNU pin)
 {
-	return -1;
+	char value[5] = {0,};
+	if (lib->mode == MODE_GPIO_SYS)
+		return -1;
+	switch (pin) {
+		case 18: pin = 0; break;
+		case 19: pin = 1; break;
+		default: return 0;
+	}
+	if (adcFds [pin] == -1)
+		return -1;
+	lseek(adcFds [pin], 0L, SEEK_SET);
+	if (read(adcFds [pin], &value[0], 4) < 0) {
+		msg(MSG_WARN, "%s: Error occurs when it reads from ADC file descriptor. \n", __func__);
+		return -1;
+	}
+	return  atoi(value);	
 }
 
 /*-------------------------------------------------------------------------------------------*/
@@ -615,16 +630,26 @@ static int init_gpio_mmap(void)
 	return 0;
 }
 
-/*------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------*/
 static void init_adc_fds(void)
 {
-}*/
+	const char *AIN0_NODE, *AIN1_NODE;
+
+	/* ADC node setup */
+	AIN0_NODE = "/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage0_raw";
+	AIN1_NODE = "/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage3_raw";
+
+	adcFds[0] = open(AIN0_NODE, O_RDONLY);
+	adcFds[1] = open(AIN1_NODE, O_RDONLY);
+}
 
 /*------------------------------------------------------------------------------------------*/
 void init_khadas_vim3(struct libkhadas *libwiring)
 {
 	init_gpio_mmap();
 
+	init_adc_fds();
+	
 	pinToGpio = pinToGpio_rev;
 	phyToGpio = phyToGpio_rev;
 
