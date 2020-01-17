@@ -288,7 +288,7 @@ static const char *physNamesKhadasVim3[64] = {
 	"    ADC0","PIN.A0  ",
 	"     1V8","PIN.A3  ",
 	"    ADC1","PIN.A2  ",
-	"  PIN.H5","PIN.A4  ",
+	"PIN.AO10","PIN.A4  ",
 	"    GND3","GND     ",
 	"  PIN.H6","PWM-F   ",
 	"  PIN.H7","RTC     ",
