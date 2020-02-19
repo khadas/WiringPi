@@ -188,7 +188,7 @@ static void setClkState (int pin, int state)
 {
 	uint32_t target = 0;
 	uint8_t bank = pin / 32;
-	uint8_t shift = bank < 2 ? bank + 2 : bank + 1;
+	uint8_t shift = bank < 2 ? bank + 3 : bank + 1;
 
 	target |= (1 << (shift + 16));
 
