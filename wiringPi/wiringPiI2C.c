@@ -236,6 +236,9 @@ int wiringPiI2CSetup (const int devId)
 	case MODEL_KHADAS_VIM:
 		device = "/dev/i2c-1";
 		break;
+	case MODEL_KHADAS_VIM2:
+		device = "/dev/i2c-0";
+		break;
 	default:
 		break;
 	}
