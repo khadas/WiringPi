@@ -233,6 +233,9 @@ int wiringPiI2CSetup (const int devId)
 	case MODEL_KHADAS_VIM3:
 		device = "/dev/i2c-3";  /*default is i2c-3 , if you want to use i2c-4, you just need edit it */
 		break;
+	case MODEL_KHADAS_VIM:
+		device = "/dev/i2c-1";
+		break;
 	default:
 		break;
 	}
