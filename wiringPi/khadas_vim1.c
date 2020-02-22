@@ -129,7 +129,7 @@ static unsigned int _digitalReadByte    (void);
 /*									board init function										*/
 /*------------------------------------------------------------------------------------------*/
 static  int init_gpio_mmap (void);
-//static  void init_adc_fds   (void);
+static  void init_adc_fds   (void);
 void init_khadas_vim1(struct libkhadas *libwiring);
 
 /*------------------------------------------------------------------------------------------*/
