@@ -513,7 +513,7 @@ static void _digitalWrite(int pin, int value)
 /*------------------------------------------------------------------------------------------*/
 static int _analogRead (int UNU pin)
 {
-	char vaule[5] = {0,};
+	char value[5] = {0,};
 	if(lib->mode == MODE_GPIO_SYS)
 		return -1;
 	switch(pin) {
