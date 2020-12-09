@@ -306,6 +306,11 @@ int piGpioLayout(void)
 		libwiring.maker = MAKER_AMLOGIC;
 		libwiring.mem   = 2;
 		libwiring.rev   = 1;
+	}else if(strstr(line, "VIM3L")){
+		libwiring.model = MODEL_KHADAS_VIM3;
+		libwiring.maker = MAKER_AMLOGIC;
+		libwiring.mem   = 2;
+		libwiring.rev   = 1;
 	}else if(strstr(line, "VIM2")){
 		libwiring.model = MODEL_KHADAS_VIM2;
 		libwiring.maker = MAKER_AMLOGIC;
