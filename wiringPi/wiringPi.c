@@ -110,6 +110,7 @@ int pthread_cancel(pthread_t h) {
 //Debugging & return codes
 int wiringPiDebug		= FALSE;
 int wiringPiReturnCodes = FALSE;
+int wiringPiSetuped     = FALSE;
 
 struct libkhadas libwiring;
 
@@ -166,14 +167,11 @@ static void warn_msg(const char *func)
 /*                       Unsupport Function list on KHADAs									*/
 /*------------------------------------------------------------------------------------------*/
 static void UNU piGpioLayoutOps	(const char UNU *why) 		{warn_msg(__func__);return;}
-void pwmSetMode				(int UNU mode)				{warn_msg(__func__);return;}
-	void pwmSetRange	(unsigned int UNU range)	{ warn_msg(__func__); return; }
-	void pwmSetClock	(int UNU divisor)		{ warn_msg(__func__); return; }
+void pwmSetMode                                (int UNU mode)                          {warn_msg(__func__);return;}
 	void gpioClockSet	(int UNU pin, int UNU freq)	{ warn_msg(__func__); return; }
 
 /* core unsupport function */
 	void pinModeAlt		(int UNU pin, int UNU mode)	{ warn_msg(__func__); return; }
-	void pwmWrite		(int UNU pin, int UNU value)	{ warn_msg(__func__); return; }
 	void analogWrite	(int UNU pin, int UNU value)	{ warn_msg(__func__); return; }
 	void pwmToneWrite	(int UNU pin, int UNU freq)	{ warn_msg(__func__); return; }
 	void digitalWriteByte2	(const int UNU value)	{ warn_msg(__func__); return; }
@@ -259,6 +257,22 @@ int wiringPiFailure(int fatal, const char *message, ...)
 	return 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/*
+ * setupCheck
+ *  Another sanity check because some users forget to call the setup
+ *  function. Mosty because they need feeding C drip by drip )-:
+ */
+/*----------------------------------------------------------------------------*/
+void setupCheck(const char *fName)
+{
+    if (!wiringPiSetuped) {
+        fprintf (stderr, "%s: You have not called one of the wiringPiSetup\n"
+        "  functions, so I'm aborting your program before it crashes anyway.\n", fName) ;
+        exit (EXIT_FAILURE) ;
+    }
+}
+
 /*------------------------------------------------------------------------------------------*/
 int piGpioLayout(void)
 {
@@ -302,6 +316,11 @@ int piGpioLayout(void)
 	gpioLayout = 1;
 
 	if(strstr(line, "VIM3")){
+		libwiring.model = MODEL_KHADAS_VIM3;
+		libwiring.maker = MAKER_AMLOGIC;
+		libwiring.mem   = 2;
+		libwiring.rev   = 1;
+	}else if(strstr(line, "VIM3L")){
 		libwiring.model = MODEL_KHADAS_VIM3;
 		libwiring.maker = MAKER_AMLOGIC;
 		libwiring.mem   = 2;
@@ -414,6 +433,44 @@ int getPUPD(int pin)
 	return -1;
 }
 
+/*----------------------------------------------------------------------------*/
+/*
+ * pwmSetRange:
+ *  Set the PWM range register. We set both range registers to the same
+ *  value. If you want different in your own code, then write your own.
+ */
+/*----------------------------------------------------------------------------*/
+void pwmSetRange (unsigned int range)
+{
+    setupCheck(__func__);
+
+    if (libwiring.pwmSetRange) {
+        libwiring.pwmSetRange(range);
+    } else {
+        warn_msg(__func__);
+    }
+}
+
+/*----------------------------------------------------------------------------*/
+/*
+ * pwmSetClock:
+ *  Set/Change the PWM clock. Originally my code, but changed
+ *  (for the better!) by Chris Hall, <chris@kchall.plus.com>
+ *  after further study of the manual and testing with a 'scope
+ */
+/*----------------------------------------------------------------------------*/
+void pwmSetClock (int divisor)
+{
+    setupCheck(__func__);
+
+    if (libwiring.pwmSetClock) {
+        libwiring.pwmSetClock(divisor);
+    } else {
+        warn_msg(__func__);
+    }
+}
+
+
 /*------------------------------------------------------------------------------------------*/
 /*																							*/
 /*									Core Functions											*/
@@ -456,6 +513,18 @@ void digitalWriteByte (const int value)
 {
 	if (libwiring.digitalWriteByte)
 		return  libwiring.digitalWriteByte(value);
+}
+/*----------------------------------------------------------------------------*/
+void pwmWrite(int pin, int value)
+{
+    setupCheck(__func__);
+
+    if (libwiring.pwmWrite) {
+        if (libwiring.pwmWrite(pin, value) < 0)
+            msg(MSG_WARN, "%s: Not available for pin %d. \n", __func__, pin);
+    } else {
+        warn_msg(__func__);
+    }
 }
 /*------------------------------------------------------------------------------------------*/
 unsigned int digitalReadByte (void)
@@ -748,6 +817,10 @@ int wiringPiSetup(void)
 {
 	int i;
 	static int alreadyDoneThis = FALSE;
+
+	if (wiringPiSetuped)
+		return 0;
+	wiringPiSetuped = TRUE;
 	
 	if(alreadyDoneThis)
 		return 0;

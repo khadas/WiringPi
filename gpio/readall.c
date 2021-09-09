@@ -567,7 +567,7 @@ void doReadall(void)
 			physNames = physNamesKhadasVim2;
 			break;
 		case MODEL_KHADAS_VIM3:
-			printf (" +------+-----+----------+------+---+----+---- Model  Khadas VIM3 --+----+---+------+----------+-----+------+\n") ;
+			printf (" +------+-----+----------+------+---+----+-- Model Khadas VIM3/3L --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim3;
 			break;
 		case MODEL_KHADAS_EDGE:
