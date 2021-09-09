@@ -143,6 +143,10 @@ struct libkhadas
 	int (*analogRead)       (int pin);
 	void    (*digitalWriteByte) (const int value);
 	unsigned int (*digitalReadByte) (void);
+	int (*pwmWrite)     (int pin, int value);
+	void    (*pwmSetRange)      (unsigned int range);
+	void    (*pwmSetClock)      (int divisor);
+
 
 	/* ISR Function pointer */
 	void    (*isrFunctions[256])(void);

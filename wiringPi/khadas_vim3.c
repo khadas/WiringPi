@@ -81,6 +81,11 @@ static const int phyToGpio_rev[64] = {
 	 -1, -1, -1,										//41-63
 };
 
+static uint16_t pwmPinToALT = 4;
+
+static uint16_t pwmPinToRange = 0;
+
+
 /*--------------------------------------------------------------------------------------*/
 /*																						*/
 /*								Global variable define									*/
@@ -97,6 +102,7 @@ static char *adcFds[2];
 
 /*	GPIO mmap control	*/
 static volatile uint32_t *gpio,*gpio1;
+static volatile uint32_t *pwm;
 
 /* 	wiringPi Global library	*/
 static struct libkhadas *lib = NULL;
@@ -129,6 +135,9 @@ static void     _digitalWrite       (int pin, int value);
 static int      _analogRead     (int pin);
 static void     _digitalWriteByte   (const int value);
 static unsigned int _digitalReadByte    (void);
+static int      _pwmWrite       (int pin, int value);
+static void     _pwmSetRange        (unsigned int range);
+static void     _pwmSetClock        (int divisor);
 
 /*--------------------------------------------------------------------------------------*/
 /*								board init function										*/
@@ -220,6 +229,7 @@ static int gpioToShiftReg (int pin)
 /*------------------------------------------------------------------------------------------*/
 /*                          offset to the GPIO Function register                            */
 /*------------------------------------------------------------------------------------------*/
+
 static int gpioToGPFSELReg(int pin)
 {
     if(pin >= VIM3_GPIOA_PIN_START && pin <= VIM3_GPIOA_PIN_END)
@@ -272,6 +282,7 @@ static int gpioToMuxReg(int pin)
 	}
 	return VIM3_GPIOAO_MUX_1_REG_OFFSET;
 }
+
 
 /*------------------------------------------------------------------------------------------*/
 static int _getModeToGpio(int mode, int pin)
@@ -355,7 +366,8 @@ static int _getPadDrive(int pin)
 /*------------------------------------------------------------------------------------------*/
 static void _pinMode(int pin, int mode)
 {
-	int fsel, shift, origPin = pin;
+	int fsel, mux, shift, origPin = pin;
+	int alt;
 
 	if (lib->mode == MODE_GPIO_SYS)
 		return;
@@ -367,6 +379,8 @@ static void _pinMode(int pin, int mode)
 
 	fsel  = gpioToGPFSELReg(pin);
 	shift = gpioToShiftReg (pin);
+	mux = gpioToMuxReg(pin);
+
 	if(pin >= VIM3_GPIOAO_PIN_START && pin <= VIM3_GPIOAO_PIN_END){
 		switch (mode) {
 			case INPUT:
@@ -398,6 +412,12 @@ static void _pinMode(int pin, int mode)
 				break;
 			case SOFT_TONE_OUTPUT:
 				softToneCreate (pin);
+				break;
+			case PWM_OUTPUT:
+				alt = pwmPinToALT;
+				*(gpio + mux) = (*(gpio + mux) & ~(0xF << (shift*4))) | (alt << (shift*4));
+				_pwmSetClock(120);
+				_pwmSetRange(500);
 				break;
 			default:
 				msg(MSG_WARN, "%s : Unknown Mode %d\n", __func__, mode);
@@ -599,6 +619,79 @@ static unsigned int _digitalReadByte (void)
 	return -1;
 }
 
+/*----------------------------------------------------------------------------*/
+// PWM signal ___-----------___________---------------_______-----_
+//               <--value-->           <----value---->
+//               <-------range--------><-------range-------->
+// PWM frequency == (PWM clock) / range
+/*----------------------------------------------------------------------------*/
+static void _pwmSetRange (unsigned int range)
+{
+	range = range & 0xFFFF;
+	pwmPinToRange = range;
+}
+
+/*----------------------------------------------------------------------------*/
+// Internal clock == 24MHz
+// PWM clock == (Internal clock) / divisor
+// PWM frequency == (PWM clock) / range
+/*----------------------------------------------------------------------------*/
+static void _pwmSetClock (int divisor)
+{       
+	if((divisor < 1) || (divisor > 128)){
+		msg(MSG_ERR,
+				"Set the clock prescaler (divisor) to 1 or more and 128 or less.: %s\n",   
+				strerror (errno));
+	}
+	divisor = (divisor - 1);
+
+		*( pwm + VIM3_PWM_MISC_REG_01_OFFSET ) = \
+			(1 << VIM3_PWM_1_CLK_EN) \
+			| ( divisor << VIM3_PWM_1_CLK_DIV0) \
+			| (1 << VIM3_PWM_0_CLK_EN) \
+			| ( divisor << VIM3_PWM_0_CLK_DIV0) \ 
+			| (0 << VIM3_PWM_1_CLK_SEL0) \
+			| (0 << VIM3_PWM_0_CLK_SEL0) \
+			| (1 << VIM3_PWM_1_EN) \
+			| (1 << VIM3_PWM_0_EN);
+}
+
+/*----------------------------------------------------------------------------*/
+// PWM signal ___-----------___________---------------_______-----_
+//               <--value-->           <----value---->
+//               <-------range--------><-------range-------->
+/*----------------------------------------------------------------------------*/
+static int _pwmWrite (int pin, int value)
+{
+    /**
+     * @todo Add node
+     * struct wiringPiNodeStruct *node = wiringPiNodes;
+     */
+
+    if (lib->mode == MODE_GPIO_SYS){
+		printf("MODE_GPIO_SYS\n");
+        return -1;
+	}
+
+    if ((pin = _getModeToGpio(lib->mode, pin)) < 0){
+		printf("error: lib->mode, pin\n");
+        return -1;
+	}
+
+    uint16_t range  = pwmPinToRange;
+
+    if( value > range ) {
+        value = range;
+    }
+
+	printf("address:0x%p,range:%d\n", pwm,range);
+    *(pwm + VIM3_PWM_1_DUTY_CYCLE_OFFSET) = (value << 16) | (range - value);
+    *(pwm + VIM3_PWM_0_DUTY_CYCLE_OFFSET) = (value << 16) | (range - value);
+
+    return 0;
+}
+
+
 /*------------------------------------------------------------------------------------------*/
 static int init_gpio_mmap(void)
 {
@@ -627,6 +720,12 @@ static int init_gpio_mmap(void)
 		return msg (MSG_ERR,
 				"wiringPiSetup: mmap (GPIO) failed: %s\n",
 				strerror (errno));
+
+	pwm = ( uint32_t * )mmap( 0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, VIM3_GPIO_PWM_BASE);
+
+	if( (int32_t)pwm == -1 )
+		msg(MSG_ERR, "wiringPiSetup: mmap (PWM) failed: %s \n", strerror (errno));
+
 	return 0;
 }
 
@@ -666,6 +765,10 @@ void init_khadas_vim3(struct libkhadas *libwiring)
 	libwiring->analogRead       = _analogRead;
 	libwiring->digitalWriteByte = _digitalWriteByte;
 	libwiring->digitalReadByte  = _digitalReadByte;
+	libwiring->pwmWrite			= _pwmWrite;
+	libwiring->pwmSetRange		= _pwmSetRange;
+	libwiring->pwmSetClock		= _pwmSetClock;
+
 
 	/* specify pin base number */
 	libwiring->pinBase = VIM3_GPIO_PIN_BASE;
