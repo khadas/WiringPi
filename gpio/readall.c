@@ -184,6 +184,41 @@ static int physToWpi_vim3 [64] =
   -1, -1, -1, -1, -1, -1, -1, -1, -1
 } ;
 
+
+static int physToWpi_vim4 [64] = 
+{
+  -1,           // 0
+  -1, -1,       // 1, 2
+  -1,  6,
+  -1,  7,
+  -1, -1,
+  -1,  8,
+  -1,  9,
+  -1, -1,
+  -1, -1,
+  -1, 10,
+  18, 11,
+  -1, 12,
+  19, 13,
+   1, 14,       // 25, 26
+  -1, -1,   // Actually I2C, but not used
+   2, 15,
+   3, 16,
+  -1, 17,
+   4, -1,
+   5, 18,
+  -1, -1,   //40
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1
+} ;
+
+
 /*----------------------------------------------------------------------------*/
 static int physToWpi_Edge [64] =
 {
@@ -274,33 +309,63 @@ static const char *physNamesKhadasVim2[64] = {
 	NULL,NULL,NULL,
 };
 
-static const char *physNamesKhadasVim3[64] = {
+static const char *physNamesKhadasVim4[64] = {
 	NULL,
 	"      5V","GND     ",
-	"      5V","PIN.A15 ",
-	"  USB_DM","PIN.A14 ",
+	"      5V","PIN.Y17 ",
+	"  USB_DM","PIN.Y18 ",
 	"  USB_DP","GND     ",
-	"     GND","PIN.AO2 ",
-	"  MCU3V3","PIN.AO3 ",
+	"     GND","PIN.T20 ",
+	"  MCU3V3","PIN.T21 ",
 	" MCUNRST","3V3     ",
 	" MCUSWIM","GND     ",
-	"     GND","PIN.A1  ",
+	"     GND","PIN.T1  ",
 	"    ADC0","PIN.A0  ",
-	"     1V8","PIN.A3  ",
-	"    ADC1","PIN.A2  ",
-	"PIN.AO10","PIN.A4  ",
+	"     1V8","PIN.T3  ",
+	"    ADC1","PIN.T2  ",
+	"  PIN.D8","PIN.T4  ",
 	"    GND3","GND     ",
-	"  PIN.H6","PWM-F   ",
-	"  PIN.H7","RTC     ",
-	"     GND","PIN.H4  ",
-	" PIN.AO1","MCU-FA1 ",
-	" PIN.AO0","PIN.Z15 ",
+	"  PIN.Y7","PIN.Y8  ",
+	"  PIN.Y6","PIN.T18 ",
+	"     GND","PIN.T19 ",
+	"  PIN.D1","MCU-FA1 ",
+	"  PIN.D2","PIN.D15 ",
 	"     3V3","GND     ",
 	//Not used
 	NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 	NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 	NULL,NULL,NULL,
 };
+
+
+static const char *physNamesKhadasVim3[64] = {
+    NULL,
+    "      5V","GND     ",
+    "      5V","PIN.A15 ",
+    "  USB_DM","PIN.A14 ",
+    "  USB_DP","GND     ",
+    "     GND","PIN.AO2 ",
+    "  MCU3V3","PIN.AO3 ",
+    " MCUNRST","3V3     ",
+    " MCUSWIM","GND     ",
+    "     GND","PIN.A1  ",
+    "    ADC0","PIN.A0  ",
+    "     1V8","PIN.A3  ",
+    "    ADC1","PIN.A2  ",
+    "PIN.AO10","PIN.A4  ",
+    "    GND3","GND     ",
+    "  PIN.H6","PWM-F   ",
+    "  PIN.H7","RTC     ",
+    "     GND","PIN.H4  ",
+    " PIN.AO1","MCU-FA1 ",
+    " PIN.AO0","PIN.Z15 ",
+    "     3V3","GND     ",
+    //Not used
+    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+    NULL,NULL,NULL,
+};
+
 
 /*----------------------------------------------------------------------------*/
 static const char *physNamesKhadasEdge [64] =
@@ -367,6 +432,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 			case MODEL_KHADAS_VIM1:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
+			case MODEL_KHADAS_VIM4:
 				printf (" |    | %5s", pupd[getPUPD(pin)]);
 				break;
 			default:
@@ -394,6 +460,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 			case MODEL_KHADAS_VIM1:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
+			case MODEL_KHADAS_VIM4:
 				printf (" | %-5s |   ", pupd[getPUPD(pin)]);
 				break;
 			default:
@@ -451,6 +518,7 @@ static void readallPhysKhadas_edge (int model, int UNU rev, int physPin, const c
 			case MODEL_KHADAS_VIM1:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
+			case MODEL_KHADAS_VIM4:
 				printf (" |    | %5s", pupd[getPUPD(pin)]);
 				break;
 			case MODEL_KHADAS_EDGE:
@@ -481,6 +549,7 @@ static void readallPhysKhadas_edge (int model, int UNU rev, int physPin, const c
 			case MODEL_KHADAS_VIM1:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
+			case MODEL_KHADAS_VIM4:
 				printf (" | %-5s |   ", pupd[getPUPD(pin)]);
 				break;
 			case MODEL_KHADAS_EDGE:
@@ -524,6 +593,9 @@ void ReadallKhadas(int model, int rev, const char *physNames[])
 		if(MODEL_KHADAS_VIM3 == model){
 			for (pin = 1 ; pin <= 40 ; pin += 2)
 				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim3);
+		}else if(MODEL_KHADAS_VIM4 == model){
+			for (pin = 1 ; pin <= 40 ; pin += 2)
+				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim4);
 		}else if (MODEL_KHADAS_VIM2 == model){
 			for (pin = 1 ; pin <= 40 ; pin += 2)
 				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim2);
@@ -568,6 +640,10 @@ void doReadall(void)
 			break;
 		case MODEL_KHADAS_VIM3:
 			printf (" +------+-----+----------+------+---+----+-- Model Khadas VIM3/3L --+----+---+------+----------+-----+------+\n") ;
+			physNames = physNamesKhadasVim3;
+			break;
+		case MODEL_KHADAS_VIM4:
+			printf (" +------+-----+----------+------+---+----+----- Model Khadas VIM4 --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim3;
 			break;
 		case MODEL_KHADAS_EDGE:
