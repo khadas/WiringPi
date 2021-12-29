@@ -43,6 +43,7 @@ static const char       *spiDev0  = "/dev/spidev0.0" ;
 static const char       *spiDev1  = "/dev/spidev0.1" ;
 static const char       *spiDevType3    = "/dev/spidev3.0";
 static const char       *spiDevVIM3 = "/dev/spidev1.0";
+static const char       *spiDevVIM4 = "/dev/spidev0.0";
 static const uint8_t     spiBPW   = 8 ;
 static const uint16_t    spiDelay = 0 ;
 
@@ -135,6 +136,11 @@ int wiringPiSPISetupMode (int channel, int speed, int mode)
 	}
 	else if (model == MODEL_KHADAS_VIM3) {
 		device = spiDevVIM3;
+		if ((fd = open (device, O_RDWR)) < 0)
+			return wiringPiFailure (WPI_ALMOST, "Unable to open SPI device: %s\n", strerror (errno)) ;
+	}
+	else if (model == MODEL_KHADAS_VIM4) {
+		device = spiDevVIM4;
 		if ((fd = open (device, O_RDWR)) < 0)
 			return wiringPiFailure (WPI_ALMOST, "Unable to open SPI device: %s\n", strerror (errno)) ;
 	}
