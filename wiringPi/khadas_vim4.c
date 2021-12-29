@@ -516,8 +516,8 @@ static int _analogRead (int UNU pin)
 	if (lib->mode == MODE_GPIO_SYS)
 		return -1;
 	switch (pin) {
-		case 18: pin = 0; break;
-		case 19: pin = 1; break;
+		case 19: pin = 0; break;
+		case 20: pin = 1; break;
 		default: return 0;
 	}
 	if (adcFds [pin] == -1)
@@ -646,8 +646,8 @@ static void init_adc_fds(void)
 	const char *AIN0_NODE, *AIN1_NODE;
 
 	/* ADC node setup */
-	AIN0_NODE = "/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage0_raw";
-	AIN1_NODE = "/sys/devices/platform/ff809000.saradc/iio:device0/in_voltage3_raw";
+	AIN0_NODE = "/sys/bus/iio/devices/iio:device0/in_voltage6_raw";
+	AIN1_NODE = "/sys/bus/iio/devices/iio:device0/in_voltage3_raw";
 
 	adcFds[0] = open(AIN0_NODE, O_RDONLY);
 	adcFds[1] = open(AIN1_NODE, O_RDONLY);
