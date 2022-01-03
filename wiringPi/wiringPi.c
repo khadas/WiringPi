@@ -31,6 +31,7 @@
 #include "khadas_vim1.h"
 #include "khadas_vim2.h"
 #include "khadas_vim3.h"
+#include "khadas_vim4.h"
 #include "khadas_edge.h"
 
 /*--------------------------------------------------------------------------------------*/
@@ -42,6 +43,7 @@ const char *piModelNames [16] = {
 	"KHADAS-VIM1",
 	"KHADAS-VIM2",
 	"KHADAS-VIM3",
+	"KHADAS-VIM4",
 	"KHADAS-EDGE",
 };
 
@@ -330,11 +332,16 @@ int piGpioLayout(void)
 		libwiring.maker = MAKER_AMLOGIC;
 		libwiring.mem   = 2;
 		libwiring.rev   = 1;
+	}else if(strstr(line, "VIM4")){
+		libwiring.model = MODEL_KHADAS_VIM4;
+		libwiring.maker = MAKER_AMLOGIC;
+		libwiring.mem   = 2;
+		libwiring.rev	= 1;
 	}else if(strstr(line, "VIM")){
 		libwiring.model = MODEL_KHADAS_VIM1;
 		libwiring.maker = MAKER_AMLOGIC;
 		libwiring.mem   = 2;
-		libwiring.rev	= 1;
+		libwiring.rev   = 1;
 	}else if(strstr(line, "Edge-V") || strstr(line, "Captain")){
         libwiring.model = MODEL_KHADAS_EDGE;
         libwiring.maker = MAKER_ROCKCHIP;
@@ -860,6 +867,9 @@ int wiringPiSetup(void)
 			break;
 		case MODEL_KHADAS_VIM3:
 			init_khadas_vim3(&libwiring);
+			break;
+		case MODEL_KHADAS_VIM4:
+			init_khadas_vim4(&libwiring);
 			break;
 		case MODEL_KHADAS_EDGE:
 			init_khadas_edge(&libwiring);
