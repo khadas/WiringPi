@@ -313,22 +313,22 @@ static const char *physNamesKhadasVim4[64] = {
 	NULL,
 	"      5V","GND     ",
 	"      5V","PIN.Y17 ",
-	"  USB_DM","PIN.Y18 ",
-	"  USB_DP","GND     ",
+	" HUB_D4N","PIN.Y18 ",
+	" HUB_D4P","GND     ",
 	"     GND","PIN.T20 ",
-	"  MCU3V3","PIN.T21 ",
-	" MCUNRST","3V3     ",
-	" MCUSWIM","GND     ",
+	"  VCCMCU","PIN.T21 ",
+	"MCUBOOT0","3V3     ",
+	"MCUSWDIO","GND     ",
 	"     GND","PIN.T1  ",
-	"    ADC0","PIN.A0  ",
-	"     1V8","PIN.T3  ",
-	"    ADC1","PIN.T2  ",
-	"  PIN.D8","PIN.T4  ",
-	"    GND3","GND     ",
+	" ADC_CH6","PIN.T0  ",
+	"  VDD1V8","PIN.T3  ",
+	" ADC_CH3","PIN.T2  ",
+	"SPDIFOUT","PIN.T4  ",
+	"     GND","GND     ",
 	"  PIN.Y7","PIN.Y8  ",
 	"  PIN.Y6","PIN.T18 ",
 	"     GND","PIN.T19 ",
-	"  PIN.D1","MCU-FA1 ",
+	"  PIN.D1","PWR_EN1 ",
 	"  PIN.D2","PIN.D15 ",
 	"     3V3","GND     ",
 	//Not used
@@ -644,7 +644,7 @@ void doReadall(void)
 			break;
 		case MODEL_KHADAS_VIM4:
 			printf (" +------+-----+----------+------+---+----+----- Model Khadas VIM4 --+----+---+------+----------+-----+------+\n") ;
-			physNames = physNamesKhadasVim3;
+			physNames = physNamesKhadasVim4;
 			break;
 		case MODEL_KHADAS_EDGE:
 			printf (" +------+-----+-------------------+------+---+----+--- Model  Khadas-Edge ---+----+---+------+----------------------------+-----+------+\n");
