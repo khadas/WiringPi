@@ -42,7 +42,7 @@
 static const char       *spiDev0  = "/dev/spidev0.0" ;
 static const char       *spiDev1  = "/dev/spidev0.1" ;
 static const char       *spiDevType3    = "/dev/spidev3.0";
-static const char       *spiDevVIM3 = "/dev/spidev1.0";
+static const char       *spiDevVIM3 = "/dev/spidev1.1";
 static const char       *spiDevVIM4 = "/dev/spidev0.0";
 static const uint8_t     spiBPW   = 8 ;
 static const uint16_t    spiDelay = 0 ;
