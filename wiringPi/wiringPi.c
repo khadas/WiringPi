@@ -21,6 +21,7 @@
 #include <sys/wait.h>
 #include <sys/ioctl.h>
 #include <asm/ioctl.h>
+#include <sys/utsname.h>
 
 #include "softPwm.h"
 #include "softTone.h"
@@ -31,6 +32,7 @@
 #include "khadas_vim1.h"
 #include "khadas_vim2.h"
 #include "khadas_vim3.h"
+#include "khadas_vim3m.h"
 #include "khadas_vim4.h"
 #include "khadas_edge.h"
 
@@ -825,6 +827,13 @@ int wiringPiSetup(void)
 	int i;
 	static int alreadyDoneThis = FALSE;
 
+	struct utsname buffer;
+
+	if (uname(&buffer) != 0) {
+		perror("uname");
+		exit(EXIT_FAILURE);
+	}
+
 	if (wiringPiSetuped)
 		return 0;
 	wiringPiSetuped = TRUE;
@@ -866,7 +875,11 @@ int wiringPiSetup(void)
 			init_khadas_vim2(&libwiring);
 			break;
 		case MODEL_KHADAS_VIM3:
-			init_khadas_vim3(&libwiring);
+			if(strstr(buffer.release, "5.")){
+				init_khadas_vim3m(&libwiring);
+			}else{
+				init_khadas_vim3(&libwiring);
+			}
 			break;
 		case MODEL_KHADAS_VIM4:
 			init_khadas_vim4(&libwiring);
