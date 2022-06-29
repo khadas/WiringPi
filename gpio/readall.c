@@ -329,7 +329,7 @@ static const char *physNamesKhadasVim4[64] = {
 	"  PIN.Y6","PIN.T18 ",
 	"     GND","PIN.T19 ",
 	"  PIN.D1","PWR_EN1 ",
-	"  PIN.D2","PIN.D15 ",
+	"  PIN.D2","PIN.D5  ",
 	"     3V3","GND     ",
 	//Not used
 	NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,

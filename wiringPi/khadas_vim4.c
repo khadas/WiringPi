@@ -34,10 +34,10 @@ static const int pinToGpio_rev[64] = {
     491,490,        //   2 | 3  :                    
     413,414,        //   4 | 5  :
     501,502,        //   6 | 7  :
-    504,505,        //   8 | 9  :
+    466,467,        //   8 | 9  :
     447,446,        //  10 | 11 :
     449,448,        //  12 | 13 :
-    450,502,        //  14 | 15 :
+    450,492,        //  14 | 15 :
     464,465,        //  16 | 17 :
     417, -1,        //  18 | 19 :
      -1, -1,        //  20 | 21 :
@@ -59,8 +59,8 @@ static const int phyToGpio_rev[64] = {
      -1,501,            //   2 | 22 :                        5V | GPIOY_17(I2CM_F_SCL)
      -1,502,            //   3 | 23 :                    USB_DM | GPIOY_18(I2CM_F_SDA)
      -1, -1,            //   4 | 24 :                    USB_DP | GND
-     -1,504,            //   5 | 25 :                       GND | GPIOT_20(I2CM_A_SCL)
-     -1,505,            //   6 | 26 :                    MCU3.3 | GPIOT_21(I2CM_A_SDA)
+     -1,466,            //   5 | 25 :                       GND | GPIOT_20(I2CM_A_SCL)
+     -1,467,            //   6 | 26 :                    MCU3.3 | GPIOT_21(I2CM_A_SDA)
      -1, -1,            //   7 | 27 :                   MCUNrST | 3.3V
      -1, -1,            //   8 | 28 :                   MCUSWIM | GND
      -1,447,            //   9 | 29 :                       GND | GPIOT_1
@@ -69,7 +69,7 @@ static const int phyToGpio_rev[64] = {
      -1,448,            //  12 | 32 :                      ADC1 | GPIOT_2
     420,450,            //  13 | 33 :         (SPDIFOUT)GPIOD_8 | GPIOT_4
      -1, -1,            //  14 | 34 :                       GND | GND
-    491,502,            //  15 | 35 :        (GPIOY_7)UART_RX_E | PWM-F(GPIOY_8)
+    491,492,            //  15 | 35 :        (GPIOY_7)UART_RX_E | PWM-F(GPIOY_8)
     490,464,            //  16 | 36 :        (GPIOY_6)UART_TX_E | GPIOT_18
      -1,465,            //  17 | 37 :                       GND | GPIOT_19
     413, -1,            //  18 | 38 :         (GPIOD_1)Linux_RX | 
