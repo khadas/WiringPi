@@ -96,7 +96,7 @@ static uint16_t pwmPinToRange = 0;
 /*--------------------------------------------------------------------------------------*/
 /*							wiringPi Pinmap control array								*/
 /*--------------------------------------------------------------------------------------*/
-const int *pinToGpio, *phyToGpio;
+static const int *pinToGpio, *phyToGpio;
 
 /*	ADC file descriptor	*/
 static char *adcFds[2];

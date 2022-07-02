@@ -90,7 +90,7 @@
 /*------------------------------------------------------------------------------------------*/
 /*								wiringPi Pinmap control arrary								*/
 /*------------------------------------------------------------------------------------------*/
-const int *pinToGpio, *phyToGpio;
+static const int *pinToGpio, *phyToGpio;
 
 /*	ADC file descriptor	*/
 static char *adcFds[2];
