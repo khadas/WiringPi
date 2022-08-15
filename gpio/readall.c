@@ -219,6 +219,41 @@ static int physToWpi_vim4 [64] =
 } ;
 
 
+static int physToWpi_vim1s [64] = 
+{
+  -1,           // 0
+  -1, -1,       // 1, 2
+  -1,  6,
+  -1,  7,
+  -1, -1,
+  -1,  8,
+  -1,  9,
+  -1, -1,
+  -1, -1,
+  -1, 10,
+  19, 11,
+  -1, 12,
+  20, 13,
+   1, 14,       // 25, 26
+  -1, -1,   // Actually I2C, but not used
+   2, 15,
+   3, 16,
+  -1, 17,
+   4, -1,
+   5, 18,
+  -1, -1,   //40
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1
+} ;
+
+
+
 /*----------------------------------------------------------------------------*/
 static int physToWpi_Edge [64] =
 {
@@ -337,6 +372,34 @@ static const char *physNamesKhadasVim4[64] = {
 	NULL,NULL,NULL,
 };
 
+static const char *physNamesKhadasVim1s[64] = {
+	NULL,
+	"      5V","GND     ",
+	"      5V","PIN.D7  ",
+	"  USB_DM","PIN.D6  ",
+	"  USB_DP","GND     ",
+	"     GND","PIN.Z11 ",
+	"  VCCMCU","PIN.Z12 ",
+	"MCU_NRST","3V3     ",
+	"MCU_SWIM","GND     ",
+	"     GND","PIN.Z1  ",
+	" ADC_CH0","PIN.Z6  ",
+	"  VDD1V8","PIN.Z2  ",
+	" ADC_CH2","PIN.Z0  ",
+	"SPDIFOUT","PIN.Z3  ",
+	"     GND","GND     ",
+	"  PIN.D3","PIN.Z6  ",
+	"  PIN.D2","PIN.Z8  ",
+	"     GND","PIN.Z10 ",
+	"  PIN.D1","PWR_EN1 ",
+	"  PIN.D0","PIN.H9  ",
+	"     3V3","GND     ",
+	//Not used
+	NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+	NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+	NULL,NULL,NULL,
+};
+
 
 static const char *physNamesKhadasVim3[64] = {
     NULL,
@@ -430,6 +493,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 		printf (" | %d", digitalRead (pin));	
 		switch(model) {
 			case MODEL_KHADAS_VIM1:
+			case MODEL_KHADAS_VIM1S:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
 			case MODEL_KHADAS_VIM4:
@@ -458,6 +522,7 @@ static void readallPhysKhadas (int model, int UNU rev, int physPin, const char *
 
 		switch(model){
 			case MODEL_KHADAS_VIM1:
+			case MODEL_KHADAS_VIM1S:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
 			case MODEL_KHADAS_VIM4:
@@ -516,6 +581,7 @@ static void readallPhysKhadas_edge (int model, int UNU rev, int physPin, const c
 		printf (" | %d", digitalRead (pin));	
 		switch(model) {
 			case MODEL_KHADAS_VIM1:
+			case MODEL_KHADAS_VIM1S:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
 			case MODEL_KHADAS_VIM4:
@@ -547,6 +613,7 @@ static void readallPhysKhadas_edge (int model, int UNU rev, int physPin, const c
 
 		switch(model){
 			case MODEL_KHADAS_VIM1:
+			case MODEL_KHADAS_VIM1S:
 			case MODEL_KHADAS_VIM2:
 			case MODEL_KHADAS_VIM3:
 			case MODEL_KHADAS_VIM4:
@@ -593,6 +660,9 @@ void ReadallKhadas(int model, int rev, const char *physNames[])
 		if(MODEL_KHADAS_VIM3 == model){
 			for (pin = 1 ; pin <= 40 ; pin += 2)
 				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim3);
+		}else if(MODEL_KHADAS_VIM1S == model){
+			for (pin = 1 ; pin <= 40 ; pin += 2)
+				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim1s);
 		}else if(MODEL_KHADAS_VIM4 == model){
 			for (pin = 1 ; pin <= 40 ; pin += 2)
 				readallPhysKhadas (model, rev, pin, physNames, physToWpi_vim4);
@@ -630,6 +700,10 @@ void doReadall(void)
 	piBoardId(&model, &rev, &mem, &maker, &overVolted);
 
 	switch(model){
+		case MODEL_KHADAS_VIM1S:
+			printf (" +------+-----+----------+------+---+----+---- Model Khadas VIM1S --+----+---+------+----------+-----+------+\n") ;
+			physNames = physNamesKhadasVim1s;
+			break;
 		case MODEL_KHADAS_VIM1:
 			printf (" +------+-----+----------+------+---+----+---- Model  Khadas VIM1 --+----+---+------+----------+-----+------+\n") ;
 			physNames = physNamesKhadasVim1;

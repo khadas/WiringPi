@@ -64,6 +64,7 @@ SRC	=	wiringPi.c						\
 		pseudoPins.c						\
 		wpiExtensions.c					\
 		khadas_vim1.c					\
+		khadas_vim1s.c					\
 		khadas_vim2.c					\
 		khadas_vim3.c                                   \
 		khadas_vim3m.c                                   \
@@ -136,6 +137,7 @@ depend:
 
 #KHADAS Boards
 khadas_vim1.o	: wiringPi.h khadas_vim1.h
+khadas_vim1s.o	: wiringPi.h khadas_vim1s.h
 khadas_vim2.o	: wiringPi.h khadas_vim2.h
 khadas_vim3.o	: wiringPi.h khadas_vim3.h
 khadas_edge.o   : wiringPi.h khadas_edge.h
