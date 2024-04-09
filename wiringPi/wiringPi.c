@@ -885,7 +885,7 @@ int wiringPiSetup(void)
 			init_khadas_vim2(&libwiring);
 			break;
 		case MODEL_KHADAS_VIM3:
-			if(strstr(buffer.release, "5.")){
+			if(access("/boot/.next", F_OK) == 0){
 				init_khadas_vim3m(&libwiring);
 			}else{
 				init_khadas_vim3(&libwiring);
