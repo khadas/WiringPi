@@ -1,5 +1,5 @@
 Package: wiringpi
-Version: 3.14-3
+Version: 3.14-4
 Section: libraries
 Priority: optional
 Architecture: arm64
